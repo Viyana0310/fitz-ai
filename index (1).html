@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ─── SEO ─── -->
+  <title>Fitz AI — Your Personal AI Fashion Stylist</title>
+  <meta name="description" content="Fitz is a free AI-powered personal stylist. Generate outfits from clothes you already own, analyse your closet, get hair and makeup advice, and discover your personal style." />
+  <meta name="keywords" content="AI fashion stylist, outfit generator, personal stylist app, closet organiser, AI outfit ideas, fashion app, style advisor, free fashion AI" />
+  <meta name="author" content="Fitz AI" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://viyana0310.github.io/fitz-ai/" />
+
+  <!-- ─── Open Graph (WhatsApp / Facebook previews) ─── -->
+  <meta property="og:title" content="Fitz AI — Your Personal AI Fashion Stylist" />
+  <meta property="og:description" content="Generate outfits, analyse your closet, and get personalised style advice — all powered by AI. Free to use." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://viyana0310.github.io/fitz-ai/" />
+
+  <!-- ─── Twitter card ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Fitz AI — Your Personal AI Fashion Stylist" />
+  <meta name="twitter:description" content="Generate outfits from clothes you already own. Free AI stylist app." />
+
+  <!-- ─── Structured data for Google ─── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Fitz AI",
+    "description": "Free AI-powered personal fashion stylist. Generate outfits, analyse your closet, get hair and makeup advice.",
+    "url": "https://fitzviyana.streamlit.app",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink: #FF6F91;
+      --pink-soft: #FFE1EA;
+      --pink-deep: #D6336C;
+      --ink: #1A1A1A;
+      --muted: #6E6669;
+      --bg: #FAF9F7;
+      --white: #ffffff;
+      --border: #F0E0E4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 249, 247, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5vw;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-logo span { color: var(--pink); }
+
+    .nav-cta {
+      background: var(--pink);
+      color: var(--white);
+      border: none;
+      border-radius: 999px;
+      padding: 0.45rem 1.2rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s ease, transform 0.12s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--pink-deep);
+      transform: translateY(-1px);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      padding: 5rem 5vw 4rem;
+      gap: 3rem;
+    }
+
+    .hero-copy { flex: 1 1 480px; max-width: 620px; }
+
+    .hero-eyebrow {
+      display: inline-block;
+      background: var(--pink-soft);
+      color: var(--pink-deep);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--ink);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--pink);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 2rem;
+      line-height: 1.65;
+    }
+
+    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    .btn-primary {
+      background: var(--pink);
+      color: var(--white);
+      border: none;
+      border-radius: 999px;
+      padding: 0.75rem 1.8rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s ease, transform 0.12s ease;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--pink-deep);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: 0.75rem 1.8rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.18s ease, color 0.18s ease;
+      display: inline-block;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--pink);
+      color: var(--pink-deep);
+    }
+
+    .hero-visual {
+      flex: 1 1 340px;
+      max-width: 460px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .mock-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.1rem 1.25rem;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+    }
+
+    .mock-card-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--pink-deep);
+      background: var(--pink-soft);
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      margin-bottom: 0.55rem;
+    }
+
+    .mock-card-text {
+      font-size: 0.88rem;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .mock-card-text b { color: var(--pink-deep); }
+
+    .mock-score {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .score-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), #FF9CB3);
+      color: white;
+      font-weight: 800;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .score-label { font-size: 0.8rem; color: var(--muted); }
+    .score-label b { color: var(--ink); display: block; font-size: 0.88rem; }
+
+    /* ─── FEATURES ─── */
+    .section {
+      padding: 5rem 5vw;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--pink-deep);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.4rem;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(255, 111, 145, 0.12);
+      border-color: var(--pink);
+    }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .feature-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-section {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      counter-reset: steps;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--pink-soft);
+      color: var(--pink-deep);
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .step-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ─── STYLES STRIP ─── */
+    .styles-strip {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .style-pill {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink);
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .style-pill:hover {
+      background: var(--pink-soft);
+      border-color: var(--pink);
+      color: var(--pink-deep);
+    }
+
+    /* ─── CTA SECTION ─── */
+    .cta-section {
+      background: linear-gradient(135deg, #FFE7EE 0%, #FFF8F8 55%, #F8F3F0 100%);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 5rem 5vw;
+    }
+
+    .cta-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .cta-free {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.8rem;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2rem 5vw;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .footer-logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .footer-logo span { color: var(--pink); }
+
+    footer p {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+      .hero {
+        flex-direction: column;
+        padding: 3rem 5vw;
+        min-height: auto;
+      }
+      .hero-visual { max-width: 100%; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Fitz<span>✦</span></a>
+    <a href="https://fitzviyana.streamlit.app" class="nav-cta" target="_blank" rel="noopener">Try Fitz Free</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="hero-copy">
+      <span class="hero-eyebrow">Free AI Fashion Stylist</span>
+      <h1 class="hero-title">Your wardrobe,<br><em>finally styled.</em></h1>
+      <p class="hero-sub">
+        Fitz is an AI stylist that builds outfits from clothes you already own,
+        analyses your closet, and gives you personalised hair and makeup advice —
+        all for free.
+      </p>
+      <div class="hero-actions">
+        <a href="https://fitzviyana.streamlit.app" class="btn-primary" target="_blank" rel="noopener">Try Fitz Free ✦</a>
+        <a href="#features" class="btn-secondary">See what it does</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="mock-card">
+        <div class="mock-card-label">AI Outfit Generator</div>
+        <div class="mock-card-text">
+          <b>Outfit 1 — Clean Girl Sunday</b><br>
+          White ribbed tank · straight leg jeans · ballet flats · gold hoops.
+          Perfect for a casual hangout with that effortless polished finish.
+        </div>
+      </div>
+      <div class="mock-card">
+        <div class="mock-card-label">Closet Analyser</div>
+        <div class="mock-score">
+          <div class="score-circle">78</div>
+          <div class="score-label">
+            <b>Your closet score</b>
+            Missing: white sneakers · neutral cardigan
+          </div>
+        </div>
+      </div>
+      <div class="mock-card">
+        <div class="mock-card-label">Hair Stylist</div>
+        <div class="mock-card-text">
+          For your wavy medium hair and oval face — try a <b>curtain fringe</b>
+          with loose waves. Takes 5 minutes, looks effortless all day.
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+
+    <div class="section-label">What Fitz does</div>
+    <h2 class="section-title">Everything your wardrobe needs</h2>
+    <p class="section-sub">
+      From outfit ideas to closet organisation to beauty advice —
+      Fitz covers your whole style life in one place.
+    </p>
+
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">✨</div>
+        <div class="feature-title">AI Outfit Generator</div>
+        <div class="feature-desc">
+          Tell Fitz what you own and your vibe. It builds 3 complete outfits
+          using only clothes already in your wardrobe.
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-title">Closet Analyser</div>
+        <div class="feature-desc">
+          Get a closet score out of 100, find out what's missing,
+          and get a personalised organisation plan.
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🤔</div>
+        <div class="feature-title">Outfit of the Day</div>
+        <div class="feature-desc">
+          Tell Fitz your mood and where you're going.
+          It picks the perfect outfit from your actual wardrobe.
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💇‍♀️</div>
+        <div class="feature-title">Hair Stylist</div>
+        <div class="feature-desc">
+          Get hairstyle recommendations based on your hair type,
+          length, face shape and occasion.
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💄</div>
+        <div class="feature-title">Makeup Stylist</div>
+        <div class="feature-desc">
+          Full makeup look recommendations tailored to your skin tone,
+          eye color, occasion and experience level.
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">👚</div>
+        <div class="feature-title">Digital Closet</div>
+        <div class="feature-desc">
+          Log your wardrobe once. Fitz remembers everything
+          and uses it across all features automatically.
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section how-section">
+
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">Up and running in minutes</h2>
+    <p class="section-sub">No app download. No credit card. Just sign up and start styling.</p>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Create your free account</div>
+        <div class="step-desc">Sign up with a username and password. Takes 30 seconds.</div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Set up your profile</div>
+        <div class="step-desc">Tell Fitz your body type, favourite style and color theme. It uses this to personalise everything.</div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Add your wardrobe</div>
+        <div class="step-desc">Log the clothes you own into your digital closet. Fitz remembers it all.</div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Let Fitz style you</div>
+        <div class="step-desc">Generate outfits, get your closet analysed, ask what to wear today — Fitz handles it.</div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- STYLES -->
+  <section class="section">
+
+    <div class="section-label">Browse styles</div>
+    <h2 class="section-title">Find your aesthetic</h2>
+    <p class="section-sub">
+      Fitz knows every major style — from Clean Girl to Dark Academia to Y2K.
+      Pick one and it tailors everything to match.
+    </p>
+
+    <div class="styles-strip">
+      <span class="style-pill">Clean Girl</span>
+      <span class="style-pill">Streetwear</span>
+      <span class="style-pill">Y2K Vibes</span>
+      <span class="style-pill">Coquette Core</span>
+      <span class="style-pill">Summer Grunge</span>
+      <span class="style-pill">Old Money</span>
+      <span class="style-pill">Dark Academia</span>
+      <span class="style-pill">Cottagecore</span>
+      <span class="style-pill">Minimalist</span>
+      <span class="style-pill">Soft Girl</span>
+    </div>
+
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2 class="cta-title">Start styling with Fitz today</h2>
+    <p class="cta-sub">Free forever. No app download needed. Works on any device.</p>
+    <a href="https://fitzviyana.streamlit.app" class="btn-primary" target="_blank" rel="noopener">Try Fitz Free ✦</a>
+    <p class="cta-free">No credit card required · Free to use · Works on mobile</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="footer-logo">Fitz<span>✦</span></a>
+    <p>Free AI fashion stylist — outfits, closet, hair and makeup advice.</p>
+    <p>Made with ❤️ by Viyana</p>
+  </footer>
+
+</body>
+</html>
